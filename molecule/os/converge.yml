@@ -2,18 +2,6 @@
   hosts: all
   become: true
   vars:
-    os_dnsmasq_config: |
-      listen-address=127.0.0.1,172.17.0.1
-      interface=docker0
-      interface=lo
-      bind-interfaces
-      server=1.1.1.1
-
-    os_resolv_config: |
-      [Resolve]
-      DNS=127.0.0.0:53
-      FallbackDNS=1.1.1.1
-
     os_packages:
       - jq
       - unzip

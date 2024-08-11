@@ -7,24 +7,6 @@
     quiet: true
   when: os_docker_config is defined
 
-- name: check "os_dnsmasq_config" variable
-  tags: always
-  assert:
-    that:
-      - os_dnsmasq_config is defined
-      - os_dnsmasq_config is string
-      - os_dnsmasq_config | length
-    quiet: true
-
-- name: check "os_resolv_config" variable
-  tags: always
-  assert:
-    that:
-      - os_resolv_config is defined
-      - os_resolv_config is string
-      - os_resolv_config | length
-    quiet: true
-
 - name: check "os_groups" variable
   tags: always
   assert:

@@ -19,7 +19,6 @@ def test_is_package_is_installed(host, package):
 
 @pytest.mark.parametrize("service", [
     "docker",
-    "dnsmasq"
 ])
 def test_service_is_running(host, service):
     service = host.service(service)
@@ -42,7 +41,7 @@ def test_sysctl(host):
     assert host.sysctl("vm.swappiness") == 1
 
 
-def test_dnsmasq_docker_bind(host):
+def test_docker_bind(host):
     assert host.socket("udp://172.17.0.1:53").is_listening
 
 
