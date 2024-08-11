@@ -1,0 +1,74 @@
+- name: check "os_docker_config" variable
+  tags: always
+  assert:
+    that:
+      - os_docker_config is mapping
+      - os_docker_config | length
+    quiet: true
+  when: os_docker_config is defined
+
+- name: check "os_dnsmasq_config" variable
+  tags: always
+  assert:
+    that:
+      - os_dnsmasq_config is defined
+      - os_dnsmasq_config is string
+      - os_dnsmasq_config | length
+    quiet: true
+
+- name: check "os_resolv_config" variable
+  tags: always
+  assert:
+    that:
+      - os_resolv_config is defined
+      - os_resolv_config is string
+      - os_resolv_config | length
+    quiet: true
+
+- name: check "os_groups" variable
+  tags: always
+  assert:
+    that:
+      - os_groups is iterable
+      - os_groups is not string
+    quiet: true
+  when: os_groups is defined
+
+- name: check "os_users" variable
+  tags: always
+  assert:
+    that:
+      - os_users is iterable
+      - os_users is not string
+      - os_users is defined
+    quiet: true
+
+- name: check "os_packages" variable
+  tags: always
+  assert:
+    that:
+      - os_packages is iterable
+      - os_packages is not string
+      - os_packages | length
+    quiet: true
+  when: os_packages is defined
+
+- name: check "os_sysctl" variable
+  tags: always
+  assert:
+    that:
+      - os_sysctl is iterable
+      - os_sysctl is not string
+      - os_sysctl | length
+    quiet: true
+  when: os_sysctl is defined
+
+- name: check "os_limits" variable
+  tags: always
+  assert:
+    that:
+      - os_limits is iterable
+      - os_limits is not string
+      - os_limits | length
+    quiet: true
+  when: os_limits is defined

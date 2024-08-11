@@ -1,0 +1,17 @@
+galaxy_info:
+  namespace: nahsilabs
+  role_name: os
+  author: Anatolios Laskaris
+  description: Configure Ubuntu server
+  min_ansible_version: 2.12
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+
+  galaxy_tags:
+    - system
+    - ubuntu
+
+dependencies: []

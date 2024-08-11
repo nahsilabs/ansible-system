@@ -1,0 +1,71 @@
+- name: allow 'admin' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%admin'
+    line: '%admin ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: create groups
+  tags: users
+  group:
+    state: present
+  args: "{{ group }}"
+  loop: "{{ os_groups }}"
+  loop_control:
+    loop_var: "group"
+    label: "{{ group.name }}"
+  when: os_groups is defined
+
+- name: create "ansible-managed" group
+  tags: users
+  group:
+    name: ansible-managed
+    state: present
+    gid: 15820
+    system: true
+
+- name: add users
+  tags: users
+  user:
+    state: present
+    ssh: "{{ omit }}"
+  args: "{{ user }}"
+  loop: "{{ os_users }}"
+  loop_control:
+    loop_var: "user"
+    label: "{{ user.name }}"
+
+- name: add ssh keys
+  tags: users
+  authorized_key:
+    user: "{{ user.name }}"
+    key: "{{ user.ssh }}"
+    exclusive: true
+  loop: "{{ os_users }}"
+  loop_control:
+    loop_var: "user"
+    label: "{{ user.name }}"
+  when:
+    - user.ssh is defined
+    - user.ssh | length
+
+- name: cleanup users not present in "os_users"
+  tags: users
+  block:
+    - name: get list of users from "ansible-managed" group
+      getent:
+        database: "group"
+        key: "ansible-managed"
+        split: ":"
+
+    - name: delete users
+      vars:
+        _users: "{{ os_users | json_query('[*].name') }}"
+        _existing_users: "{{ getent_group['ansible-managed'][-1].split(',') }}"
+      user:
+        name: "{{ user }}"
+        state: absent
+      loop: "{{ _existing_users | difference(_users) }}"
+      loop_control:
+        loop_var: "user"

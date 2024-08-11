@@ -1,0 +1,52 @@
+- name: install packages
+  tags: packages
+  apt:
+    name: "{{ os_packages }}"
+    install_recommends: false
+    update_cache: true
+    autoclean: true
+    autoremove: true
+    state: present
+
+- name: install python packages
+  apt:
+    name:
+      - "python3-pip"
+      - "python3-dev"
+      - "python3-setuptools"
+      - "python-is-python3"
+      - "virtualenv"
+    install_recommends: false
+
+- name: set sysctl entries
+  tags: sysctl
+  sysctl:
+    name: "{{ sysctl.name }}"
+    value: "{{ sysctl.value }}"
+    state: present
+    sysctl_set: true
+  loop: "{{ os_sysctl }}"
+  loop_control:
+    loop_var: "sysctl"
+    label: "{{ sysctl.name }}"
+  when: os_sysctl is defined
+
+- name: manage limits.conf
+  tags: limits
+  pam_limits:
+  args: "{{ limit }}"
+  loop: "{{ os_limits }}"
+  loop_control:
+    loop_var: "limit"
+    label: "{{ limit.domain }} {{ limit.limit_item }}:{{ limit.limit_type }}"
+  when: os_limits is defined
+
+- name: disable ufw
+  ufw:
+    state: disabled
+
+- name: stop and disable snapd
+  systemd_service:
+    name: snapd
+    enabled: false
+    state: stopped

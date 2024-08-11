@@ -1,0 +1,18 @@
+namespace: nahsilabs
+name: system
+version: 1.0.0 # x-release-please-version
+readme: README.md
+authors:
+  - Anatolios Laskaris <nahsi@nahsi.dev> (https://nahsi.dev)
+
+description: Collection of roles to setup Ubuntu server
+license_file: LICENSE
+
+tags:
+  - ubuntu
+  - server
+
+repository: https://github.com/nahsilabs/ansible-system/
+documentation: https://github.com/nahsilabs/ansible-system/tree/main/README.md
+homepage: https://github.com/nahsilabs/ansible-system/
+issues: https://github.com/nahsilabs/ansible-system/issues

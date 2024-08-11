@@ -1,0 +1,60 @@
+- name: os role
+  hosts: all
+  become: true
+  vars:
+    os_dnsmasq_config: |
+      listen-address=127.0.0.1,172.17.0.1
+      interface=docker0
+      interface=lo
+      bind-interfaces
+      server=1.1.1.1
+
+    os_resolv_config: |
+      [Resolve]
+      DNS=127.0.0.0:53
+      FallbackDNS=1.1.1.1
+
+    os_packages:
+      - jq
+      - unzip
+
+    os_groups:
+      - name: "molecule-test"
+        gid: 666
+
+    os_users:
+      - name: "molecule"
+        uid: 666
+        system: true
+        shell: "/sbin/nologin"
+        group: "molecule-test"
+        groups:
+          - docker
+          - ansible-managed
+        append: true
+        ssh: https://github.com/nahsi.keys
+
+    os_sysctl:
+      - name: vm.swappiness
+        value: 1
+
+    os_limits:
+      - domain: '*'
+        limit_type: "hard"
+        limit_item: "nofile"
+        comment: "Increse max open file limit"
+        value: 65536
+
+      - domain: '*'
+        limit_type: "soft"
+        limit_item: "nofile"
+        comment: "Increse max open file limit"
+        value: 65536
+
+  collections:
+    - nahsilabs.system
+
+  tasks:
+    - name: Run os role
+      include_role:
+        name: os
