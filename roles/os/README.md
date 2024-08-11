@@ -42,33 +42,11 @@ Setup Ubuntu server.
 
 ## Tags
 
-#### `sysctl`
-
-- configure sysctl entries
-
-#### `limits`
-
-- manage `/etc/security/limits.conf`
-
-#### `users`
-
-- manage users and groups
-
-#### `directories`
-
-- create directories
-
-#### `files`
-
-- create files
-
-#### `packages`
-
-- install packages
-
-#### `docker`
-
-- configure docker
+- `sysctl` configure sysctl entries
+- `limits` manage `/etc/security/limits.conf`
+- `users` - manage users and groups
+- `packages` install packages
+- `docker` - configure docker
 
 ## Author
 
