@@ -1,0 +1,26 @@
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: create "ansible-managed" group
+      group:
+        name: ansible-managed
+        state: present
+        system: true
+
+    - name: create dummy users
+      user:
+        state: present
+      args: "{{ user }}"
+      loop:
+        - name: "dummy"
+          uid: 700
+          system: true
+          shell: "/sbin/nologin"
+          group: "users"
+          groups:
+            - ansible-managed
+      loop_control:
+        loop_var: "user"
+        label: "{{ user.name }}"
